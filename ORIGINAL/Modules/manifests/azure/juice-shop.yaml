@@ -1,0 +1,63 @@
+# Juice Shop
+# Deployment 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juice-shop-deployment
+  labels:
+    app: juice-shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: juice-shop
+  template:
+    metadata:
+      labels:
+        app: juice-shop
+    spec:
+      containers:
+      - name: juice-shop
+        image: registry4oxcloudgraph.azurecr.io/juice-shop:v1
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: juice-shop-service
+spec:
+  selector:
+    app: juice-shop
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+---
+# Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: juice-shop-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: juice-shop-service
+            port:
+              number: 80

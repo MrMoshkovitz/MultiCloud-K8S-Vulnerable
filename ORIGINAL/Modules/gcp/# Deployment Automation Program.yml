@@ -1,0 +1,69 @@
+# Deployment Automation Program
+
+## Plan:
+
+1. Program Loads .env file from .env with the following variables:
+    - PREFIX
+    - CONTAINER_IMAGE_NAME
+    - CONTAINER_IMAGE_TAG
+    - AZURE_CONTAINER_REGISTRY
+    - AZURE_CONTAINER_REGISTRY_USERNAME
+    - AZURE_CONTAINER_REGISTRY_PASSWORD
+    - AZURE_REGION
+    - AZURE_TENANT_ID
+    - AZURE_CLIENT_ID
+    - AZURE_CLIENT_SECRET
+    - AZURE_SUBSCRIPTION_ID
+    - GCP_PROJECT_ID
+    - GCP_REGION
+    - GCP_ARTIFACT_REGISTRY_REPO
+    - GCP_SERVICE_ACCOUNT_NAME
+    - GCP_SERVICE_ACCOUNT_EMAIL
+
+2. Program Loop through a list of cloud providers (Currently only Azure and GCP are supported) and deploy the following:
+    1. If Azure:
+    - RESOURCE_GROUP = $PREFIX-rg
+    - CONTAINER_REGISTRY = $PREFIX-registry
+    - VPC = $PREFIX-vpc
+    - KUBERNETES_CLUSTER = $PREFIX-aks
+    - ACCOUNT_ID = $AZURE_TENANT_ID
+    - CLIENT_ID = $AZURE_CLIENT_ID
+    - CLIENT_SECRET = $AZURE_CLIENT_SECRET
+    - REGION = $AZURE_REGION    
+        - Create a resource group
+        - Create a container registry
+        - Create VPC
+        - Create Kubernetes Cluster
+        - Attach VPC to Kubernetes Cluster
+        - Attach Kubernetes Cluster to Container Registry
+        - Tag juice-shop image with Azure Container Registry URL
+        - Push juice-shop image to Azure Container Registry
+        - Use kubectl to deploy juice-shop to Kubernetes Cluster (kubectl apply -f Azure/azure-juice-shop.yaml)
+    2. If GCP:
+    - CONTAINER_REGISTRY = $PREFIX-registry
+    - VPC = $PREFIX-vpc
+    - KUBERNETES_CLUSTER = $PREFIX-gke
+    - ACCOUNT_ID = $GCP_PROJECT_ID
+    - CLIENT_ID = $GCP_SERVICE_ACCOUNT_EMAIL
+    - CLIENT_SECRET = $GCP_SERVICE_ACCOUNT_FILE
+    - REGION = $GCP_REGION
+        - Create a container registry
+        - Create VPC
+        - Create Kubernetes Cluster
+        - Attach VPC to Kubernetes Cluster
+        - Attach Kubernetes Cluster to Container Registry
+        - Tag juice-shop image with GCP Container Registry URL
+        - Push juice-shop image to GCP Container Registry
+        - Use kubectl to deploy juice-shop to GCP Kubernetes Cluster (kubectl apply -f GCP/gcp-juice-shop.yaml)
+
+3. Program outputs the following:
+    Azure:
+    - Azure Juice Shop URL
+    - Azure Juice Shop Service URL
+    - Azure Juice Shop Ingress URL
+    GCP:
+    - GCP Juice Shop URL
+    - GCP Juice Shop Service URL
+    - GCP Juice Shop Ingress URL
+
+

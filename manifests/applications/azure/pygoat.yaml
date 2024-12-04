@@ -1,0 +1,47 @@
+
+# Deployment
+
+
+# Service
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pygoat-deployment
+  labels:
+    app: pygoat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pygoat
+  template:
+    metadata:
+      labels:
+        app: pygoat
+    spec:
+      containers:
+      - name: pygoat
+        image: registry4oxcloudgraph.azurecr.io/pygoat:v1
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pygoat-service
+spec:
+  selector:
+    app: pygoat
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: LoadBalancer
