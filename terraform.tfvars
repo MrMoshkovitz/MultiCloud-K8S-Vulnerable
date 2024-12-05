@@ -1,6 +1,6 @@
 #* General Variables
-prefix             = "oxcloudgraph"
-registry_name      = "registry4oxcloudgraph"
+prefix             = ""
+registry_name      = ""
 image_name         = "juice-shop"
 image_version      = "v1"
 subnet_cidr        = "10.0.1.0/24"
