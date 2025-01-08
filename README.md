@@ -204,4 +204,11 @@ This infrastructure deploys the following intentionally vulnerable applications:
 [MIT License](LICENSE)
 
 ---
+
+## Future Updates for AWS Integration
+There are additional AWS files that need to be updated in the future for integration. These files include:
+- `AWSToComnine/aws/iam.tf`
+- `AWSToComnine/aws/kms.tf`
+- `AWSToComnine/aws/lambda.tf`
+
 ⚠️ **Reminder**: This project is for educational purposes only. Deploy at your own risk.
